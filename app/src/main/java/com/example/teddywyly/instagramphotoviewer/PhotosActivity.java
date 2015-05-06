@@ -1,5 +1,6 @@
 package com.example.teddywyly.instagramphotoviewer;
 
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,11 +24,25 @@ public class PhotosActivity extends ActionBarActivity {
     public static final String CLIENT_ID = "fcbc8aead3684d019846b1040e4ed6bc";
     private ArrayList<InstagramPhoto> photos;
     private InstagramPhotosAdapter aPhotos;
+    private SwipeRefreshLayout swipeContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photos);
+        swipeContainer = (SwipeRefreshLayout)findViewById(R.id.swipeContainer);
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                fetchPopularPhotos();
+            }
+        });
+
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
         // SEND OUT API REQUEST TO POPULAR PHOTOS
         photos = new ArrayList<>();
         aPhotos = new InstagramPhotosAdapter(this, photos);
@@ -50,6 +65,7 @@ public class PhotosActivity extends ActionBarActivity {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 Log.i("DEBUG", response.toString());
+                aPhotos.clear();
 
                 JSONArray photosJSON = null;
                 try {
@@ -58,10 +74,12 @@ public class PhotosActivity extends ActionBarActivity {
                         JSONObject photoJSON = photosJSON.getJSONObject(i);
                         InstagramPhoto photo = new InstagramPhoto();
                         photo.username = photoJSON.getJSONObject("user").getString("username");
+                        photo.profileURL = photoJSON.getJSONObject("user").getString("profile_picture");
                         photo.caption = photoJSON.getJSONObject("caption").getString("text");
                         photo.imageURL = photoJSON.getJSONObject("images").getJSONObject("standard_resolution").getString("url");
                         photo.imageHeight = photoJSON.getJSONObject("images").getJSONObject("standard_resolution").getInt("height");
                         photo.likesCount = photoJSON.getJSONObject("likes").getInt("count");
+                        photo.timestamp = photoJSON.getInt("created_time");
                         photos.add(photo);
                     }
                 } catch(JSONException e) {
@@ -69,6 +87,7 @@ public class PhotosActivity extends ActionBarActivity {
                 }
 
                 aPhotos.notifyDataSetChanged();
+                swipeContainer.setRefreshing(false);
 
             }
 

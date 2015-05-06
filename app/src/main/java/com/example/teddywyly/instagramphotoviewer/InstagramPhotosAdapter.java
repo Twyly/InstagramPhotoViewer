@@ -2,6 +2,7 @@ package com.example.teddywyly.instagramphotoviewer;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,10 +62,8 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> {
         return transformation;
     }
 
-    private String timestampText(int timestamp) {
-
-
-        return Integer.toString(timestamp);
+    private String timestampText(long timestamp) {
+        return DateUtils.getRelativeTimeSpanString(timestamp*1000, System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
     }
 
 

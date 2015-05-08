@@ -7,7 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.makeramen.roundedimageview.RoundedTransformationBuilder;
@@ -38,16 +40,23 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> {
         TextView tvUsername = (TextView)convertView.findViewById(R.id.tvUsername);
         TextView tvLikes = (TextView)convertView.findViewById(R.id.tvLikes);
         TextView tvTimestamp = (TextView)convertView.findViewById(R.id.tvTimestamp);
+        Button btnComment = (Button)convertView.findViewById(R.id.btnComment);
         ImageView ivPhoto = (ImageView)convertView.findViewById(R.id.ivPhoto);
         ImageView ivProfile = (ImageView)convertView.findViewById(R.id.ivProfile);
+        LinearLayout llComments = (LinearLayout)convertView.findViewById(R.id.llComments);
 
         tvCaption.setText(photo.caption);
         tvUsername.setText(photo.username);
-        tvLikes.setText(photo.likesCount + "likes");
+        tvLikes.setText(photo.likesCount + " likes");
         tvTimestamp.setText(timestampText(photo.timestamp));
-        ivPhoto.setImageResource(0);
-        Picasso.with(getContext()).load(photo.imageURL).into(ivPhoto);
+        btnComment.setText("view comments");
 
+        llComments.removeAllViews();
+        // Add comments here
+
+        ivPhoto.setImageResource(0);
+        ivProfile.setImageResource(0);
+        Picasso.with(getContext()).load(photo.imageURL).into(ivPhoto);
         Picasso.with(getContext()).load(photo.profileURL).fit().transform(circleTransformationForImageView(ivProfile)).into(ivProfile);
 
         return convertView;

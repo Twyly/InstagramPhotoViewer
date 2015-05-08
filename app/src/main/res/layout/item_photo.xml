@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToPadding="false"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp">
 
-    <ImageButton
+    <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/ivPhoto"
@@ -12,6 +16,8 @@
         android:cropToPadding="false"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_marginLeft="-15dp"
+        android:layout_marginRight ="-15dp"
         android:layout_below="@+id/ivProfile" />
 
     <TextView
@@ -22,7 +28,11 @@
         android:layout_below="@+id/tvLikes"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:textColor="@color/themelightgray" />
+        android:textColor="@color/themelightgray"
+        android:layout_alignRight="@+id/tvTimestamp"
+        android:layout_alignEnd="@+id/tvTimestamp"
+        android:paddingTop="15dp"
+        android:ellipsize="end" />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -31,9 +41,10 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
         android:minHeight="50dp"
-        android:minWidth="50dp"
-        android:layout_margin="10dp" />
+        android:minWidth="50dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -42,10 +53,14 @@
         android:id="@+id/tvUsername"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/ivProfile"
+        android:layout_toLeftOf="@+id/tvTimestamp"
         android:layout_toEndOf="@+id/ivProfile"
         android:layout_above="@+id/ivPhoto"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:gravity="center_vertical"
-        android:textColor="@color/themeblue" />
+        android:textColor="@color/themeblue"
+        android:ellipsize="end" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -57,17 +72,42 @@
         android:layout_alignParentEnd="true"
         android:layout_above="@+id/ivPhoto"
         android:gravity="center_vertical"
-        android:layout_marginRight="10dp"
-        android:textColor="@color/themelightgray" />
+        android:textColor="@color/themelightgray"
+        android:ellipsize="end" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="New Text"
         android:id="@+id/tvLikes"
-        android:layout_below="@+id/ivPhoto"
+        android:textColor="@color/themeblue"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:textColor="@color/themeblue" />
+        android:layout_below="@+id/ivPhoto"
+        android:layout_alignRight="@+id/tvTimestamp"
+        android:layout_alignEnd="@+id/tvTimestamp"
+        android:paddingTop="15dp"
+        android:ellipsize="end" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Button"
+        android:textAllCaps="false"
+        android:id="@+id/btnComment"
+        android:layout_below="@+id/tvCaption"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="@android:color/transparent"
+        android:textColor="@color/themelightgray" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/btnComment"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/llComments"></LinearLayout>
 
 </RelativeLayout>

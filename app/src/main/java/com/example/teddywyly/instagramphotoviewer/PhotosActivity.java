@@ -63,6 +63,7 @@ public class PhotosActivity extends ActionBarActivity {
 
             //on success
             @Override
+
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 Log.i("DEBUG", response.toString());
                 aPhotos.clear();
@@ -94,8 +95,9 @@ public class PhotosActivity extends ActionBarActivity {
             //on failure
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-
+                swipeContainer.setRefreshing(false);
             }
+
 
         });
 

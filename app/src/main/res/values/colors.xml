@@ -2,4 +2,5 @@
 <resources>
     <color name="themeblue">#1C5A86</color>
     <color name="themelightgray">#A5AAAD</color>
+    <color name="themedarkgray">#4B535A</color>
 </resources>

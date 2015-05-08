@@ -3,6 +3,7 @@ package com.example.teddywyly.instagramphotoviewer;
 import android.content.Context;
 import android.content.Intent;
 import android.text.Html;
+import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,56 +26,77 @@ import java.util.List;
  */
 public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> {
 
+    private HTMLTextFormatter formatter;
+    private static class ViewHolder {
+        TextView caption;
+        TextView username;
+        TextView likes;
+        TextView timestamp;
+        TextView seeComments;
+        ImageView photo;
+        ImageView profile;
+        LinearLayout comments;
+    }
+
     public InstagramPhotosAdapter(Context context, List<InstagramPhoto> objects) {
         super(context, android.R.layout.simple_list_item_1, objects);
+        formatter = new HTMLTextFormatter(context.getResources());
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
         final InstagramPhoto photo = getItem(position);
+
+        ViewHolder viewHolder;
         if (convertView == null) {
+            viewHolder = new ViewHolder();
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_photo, parent, false);
+
+            viewHolder.caption = (TextView)convertView.findViewById(R.id.tvCaption);
+            viewHolder.username = (TextView)convertView.findViewById(R.id.tvUsername);
+            viewHolder.likes = (TextView)convertView.findViewById(R.id.tvLikes);
+            viewHolder.timestamp = (TextView)convertView.findViewById(R.id.tvTime);
+            viewHolder.seeComments = (TextView)convertView.findViewById(R.id.tvSeeComments);
+            viewHolder.photo = (ImageView)convertView.findViewById(R.id.ivPhoto);
+            viewHolder.profile = (ImageView)convertView.findViewById(R.id.ivProfile);
+            viewHolder.comments = (LinearLayout)convertView.findViewById(R.id.llComments);
+
+            convertView.setTag(viewHolder);
+        } else {
+            viewHolder = (ViewHolder)convertView.getTag();
         }
-        TextView tvCaption = (TextView)convertView.findViewById(R.id.tvCaption);
-        TextView tvUsername = (TextView)convertView.findViewById(R.id.tvUsername);
-        TextView tvLikes = (TextView)convertView.findViewById(R.id.tvLikes);
-        TextView tvTimestamp = (TextView)convertView.findViewById(R.id.tvTime);
-        Button btnComment = (Button)convertView.findViewById(R.id.btnComment);
-        ImageView ivPhoto = (ImageView)convertView.findViewById(R.id.ivPhoto);
-        ImageView ivProfile = (ImageView)convertView.findViewById(R.id.ivProfile);
-        LinearLayout llComments = (LinearLayout)convertView.findViewById(R.id.llComments);
 
-        tvCaption.setText(Html.fromHtml(formattedUsernameText(photo.username) + " " + formattedCaptionText(photo.caption)));
 
-        tvUsername.setText(photo.username);
-        tvLikes.setText(photo.likesCount + " likes");
-        tvTimestamp.setText(timestampText(photo.timestamp));
-        btnComment.setText("view all " + photo.commentCount + " comments");
-        btnComment.setOnClickListener(null);
-        btnComment.setOnClickListener(new View.OnClickListener() {
+        viewHolder.caption.setText(TextUtils.concat(formatter.usernameSpanned(photo.username), " ", formatter.captionSpanned(photo.caption)));
+        viewHolder.username.setText(photo.username);
+        viewHolder.likes.setText("\u2665 " + photo.likesCount + " likes");
+        viewHolder.timestamp.setText(formatter.timestampText(photo.timestamp));
+        viewHolder.seeComments.setText("view all " + photo.commentCount + " comments");
+        viewHolder.seeComments.setOnClickListener(null);
+        viewHolder.seeComments.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.d("###", "Clicked");
                 launchCommentsView(photo);
             }
         });
-
-        llComments.removeAllViews();
+        viewHolder.comments.removeAllViews();
         // Add comments here
         for (int i=0; i< Math.min(3, photo.commentCount); i++) {
             InstagramComment comment = photo.comments.get(i);
             View line = LayoutInflater.from(getContext()).inflate(R.layout.item_photo_comment, parent, false);
             TextView tvComment = (TextView)line.findViewById(R.id.tvComment);
-//            tvComment.setText(comment.text);
-            tvComment.setText(Html.fromHtml(formattedUsernameText(comment.username) + " " + formattedCaptionText(comment.text)));
-            llComments.addView(line);
+            tvComment.setText(TextUtils.concat(formatter.usernameSpanned(comment.username),  " ", formatter.captionSpanned(comment.text)));
+            viewHolder.comments.addView(line);
         }
 
-        ivPhoto.setImageResource(0);
-        ivProfile.setImageResource(0);
-        Picasso.with(getContext()).load(photo.imageURL).into(ivPhoto);
-        Picasso.with(getContext()).load(photo.profileURL).fit().transform(circleTransformationForImageView(ivProfile)).into(ivProfile);
+        viewHolder.photo.setImageResource(0);
+        viewHolder.profile.setImageResource(0);
+//        float ratio = (float)photo.imageWidth/photo.imageHeight;
+//        Picasso.with(getContext()).load(photo.imageURL).resize(0., 0).into(ivPhoto);
+        Picasso.with(getContext()).load(photo.imageURL).into(viewHolder.photo);
+        Picasso.with(getContext()).load(photo.profileURL).fit().transform(circleTransformationForImageView(viewHolder.profile)).into(viewHolder.profile);
 
         return convertView;
 
@@ -86,16 +108,6 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> {
         getContext().startActivity(i);
     }
 
-    private String formattedUsernameText(String username) {
-        return "<font color=" + getContext().getResources().getColor(R.color.themeblue) + ">" + username + "</font>";
-    }
-
-    private String formattedCaptionText(String caption) {
-
-        //caption.replaceAll("\\b#|@\\w*\\b", "<font color=" + getContext().getResources().getColor(R.color.themeblue) + ">" + "$1" + "</font>");
-        return "<font color=" + getContext().getResources().getColor(R.color.themelightgray) + ">" + caption + "</font>";
-    }
-
     private Transformation circleTransformationForImageView(ImageView view) {
         Transformation transformation = new RoundedTransformationBuilder()
                 .cornerRadiusDp(25)
@@ -104,9 +116,6 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> {
         return transformation;
     }
 
-    private String timestampText(long timestamp) {
-        return DateUtils.getRelativeTimeSpanString(timestamp*1000, System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
-    }
 
 
 }

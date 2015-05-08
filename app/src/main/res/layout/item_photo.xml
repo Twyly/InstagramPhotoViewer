@@ -6,7 +6,7 @@
     android:paddingLeft="15dp"
     android:paddingRight="15dp"
     android:paddingTop="10dp"
-    android:paddingBottom="10dp">
+    android:paddingBottom="20dp">
 
     <ImageView
         android:layout_width="match_parent"
@@ -21,6 +21,7 @@
         android:layout_marginLeft="-15dp"
         android:layout_marginRight ="-15dp"
         android:layout_marginTop="10dp"
+        android:layout_marginBottom="3dp"
         android:layout_below="@+id/ivProfile" />
 
     <ImageView
@@ -72,7 +73,8 @@
         android:layout_below="@+id/ivPhoto"
         android:layout_alignRight="@+id/tvTime"
         android:layout_alignEnd="@+id/tvTime"
-        android:paddingTop="15dp"
+        android:paddingTop="3dp"
+        android:paddingBottom="3dp"
         android:ellipsize="end" />
 
     <TextView
@@ -83,21 +85,25 @@
         android:layout_below="@+id/tvLikes"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:textColor="@color/themelightgray"
+        android:textColor="@color/themedarkgray"
         android:layout_alignRight="@+id/tvTime"
         android:layout_alignEnd="@+id/tvTime"
-        android:paddingTop="15dp"
+        android:paddingTop="3dp"
+        android:paddingBottom="3dp"
         android:ellipsize="end" />
 
-    <Button
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="New Button"
         android:textAllCaps="false"
-        android:id="@+id/btnComment"
+        android:id="@+id/tvSeeComments"
+        android:clickable="true"
         android:layout_below="@+id/tvCaption"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:paddingTop="3dp"
+        android:paddingBottom="3dp"
         android:background="@android:color/transparent"
         android:textColor="@color/themelightgray" />
 
@@ -105,7 +111,7 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/btnComment"
+        android:layout_below="@+id/tvSeeComments"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:id="@+id/llComments"></LinearLayout>

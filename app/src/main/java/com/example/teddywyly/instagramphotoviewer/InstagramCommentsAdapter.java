@@ -21,29 +21,46 @@ import java.util.List;
  */
 public class InstagramCommentsAdapter extends ArrayAdapter<InstagramComment> {
 
+    private HTMLTextFormatter formatter;
+    private static class ViewHolder {
+        TextView username;
+        TextView comment;
+        TextView time;
+        ImageView profile;
+    }
+
 
     public InstagramCommentsAdapter(Context context, List<InstagramComment> objects) {
         super(context, android.R.layout.simple_list_item_1, objects);
+        formatter = new HTMLTextFormatter(context.getResources());
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+
         InstagramComment comment = getItem(position);
+
+        ViewHolder viewHolder;
+
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_comment, parent, false);
+            viewHolder = new ViewHolder();
+            viewHolder.username = (TextView)convertView.findViewById(R.id.tvUsername);
+            viewHolder.comment = (TextView)convertView.findViewById(R.id.tvComment);
+            viewHolder.time = (TextView)convertView.findViewById(R.id.tvTime);
+            viewHolder.profile = (ImageView)convertView.findViewById(R.id.ivProfile);
+
+            convertView.setTag(viewHolder);
+        } else {
+            viewHolder = (ViewHolder)convertView.getTag();
         }
 
-        TextView tvUsername = (TextView)convertView.findViewById(R.id.tvUsername);
-        TextView tvComment = (TextView)convertView.findViewById(R.id.tvComment);
-        TextView tvTime = (TextView)convertView.findViewById(R.id.tvTime);
-        ImageView ivProfile = (ImageView)convertView.findViewById(R.id.ivProfile);
+        viewHolder.username.setText(formatter.usernameSpanned(comment.username));
+        viewHolder.comment.setText(formatter.captionSpanned(comment.text));
+        viewHolder.time.setText(formatter.timestampText(comment.timestamp));
 
-        tvUsername.setText(comment.username);
-        tvComment.setText(comment.text);
-        tvTime.setText(comment.timestamp + "");
-
-        ivProfile.setImageResource(0);
-        Picasso.with(getContext()).load(comment.profileURL).fit().transform(circleTransformationForImageView(ivProfile)).into(ivProfile);
+        viewHolder.profile.setImageResource(0);
+        Picasso.with(getContext()).load(comment.profileURL).fit().transform(circleTransformationForImageView(viewHolder.profile)).into(viewHolder.profile);
 
         return convertView;
     }

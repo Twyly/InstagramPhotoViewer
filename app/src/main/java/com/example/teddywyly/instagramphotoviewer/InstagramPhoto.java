@@ -11,6 +11,7 @@ public class InstagramPhoto {
     public String imageURL;
     public String profileURL;
     public int imageHeight;
+    public int imageWidth;
     public int likesCount;
     public int commentCount;
     public long timestamp;

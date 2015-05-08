@@ -1,5 +1,7 @@
 package com.example.teddywyly.instagramphotoviewer;
 
+import java.util.ArrayList;
+
 /**
  * Created by teddywyly on 5/5/15.
  */
@@ -10,5 +12,7 @@ public class InstagramPhoto {
     public String profileURL;
     public int imageHeight;
     public int likesCount;
+    public int commentCount;
     public long timestamp;
+    public ArrayList<InstagramComment> comments;
 }

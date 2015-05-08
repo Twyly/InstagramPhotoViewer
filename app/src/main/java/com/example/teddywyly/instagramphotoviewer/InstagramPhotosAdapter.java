@@ -53,10 +53,17 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> {
         tvUsername.setText(photo.username);
         tvLikes.setText(photo.likesCount + " likes");
         tvTimestamp.setText(timestampText(photo.timestamp));
-        btnComment.setText("view comments");
+        btnComment.setText("view all " + photo.commentCount + " comments");
 
         llComments.removeAllViews();
         // Add comments here
+        for (int i=0; i< Math.min(3, photo.commentCount); i++) {
+            InstagramComment comment = photo.comments.get(i);
+            View line = LayoutInflater.from(getContext()).inflate(R.layout.item_photo_comment, parent, false);
+            TextView tvComment = (TextView)line.findViewById(R.id.tvComment);
+            tvComment.setText(comment.text);
+            llComments.addView(line);
+        }
 
         ivPhoto.setImageResource(0);
         ivProfile.setImageResource(0);

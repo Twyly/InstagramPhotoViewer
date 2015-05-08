@@ -14,5 +14,6 @@ public class InstagramPhoto {
     public int likesCount;
     public int commentCount;
     public long timestamp;
+    public String mediaID;
     public ArrayList<InstagramComment> comments;
 }

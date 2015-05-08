@@ -1,10 +1,10 @@
 package com.example.teddywyly.instagramphotoviewer;
 
 import android.content.Context;
-import android.graphics.Color;
+import android.content.Intent;
 import android.text.Html;
-import android.text.TextUtils;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +18,6 @@ import com.makeramen.roundedimageview.RoundedTransformationBuilder;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,14 +32,14 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        InstagramPhoto photo = getItem(position);
+        final InstagramPhoto photo = getItem(position);
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_photo, parent, false);
         }
         TextView tvCaption = (TextView)convertView.findViewById(R.id.tvCaption);
         TextView tvUsername = (TextView)convertView.findViewById(R.id.tvUsername);
         TextView tvLikes = (TextView)convertView.findViewById(R.id.tvLikes);
-        TextView tvTimestamp = (TextView)convertView.findViewById(R.id.tvTimestamp);
+        TextView tvTimestamp = (TextView)convertView.findViewById(R.id.tvTime);
         Button btnComment = (Button)convertView.findViewById(R.id.btnComment);
         ImageView ivPhoto = (ImageView)convertView.findViewById(R.id.ivPhoto);
         ImageView ivProfile = (ImageView)convertView.findViewById(R.id.ivProfile);
@@ -54,6 +51,14 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> {
         tvLikes.setText(photo.likesCount + " likes");
         tvTimestamp.setText(timestampText(photo.timestamp));
         btnComment.setText("view all " + photo.commentCount + " comments");
+        btnComment.setOnClickListener(null);
+        btnComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("###", "Clicked");
+                launchCommentsView(photo);
+            }
+        });
 
         llComments.removeAllViews();
         // Add comments here
@@ -61,7 +66,8 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> {
             InstagramComment comment = photo.comments.get(i);
             View line = LayoutInflater.from(getContext()).inflate(R.layout.item_photo_comment, parent, false);
             TextView tvComment = (TextView)line.findViewById(R.id.tvComment);
-            tvComment.setText(comment.text);
+//            tvComment.setText(comment.text);
+            tvComment.setText(Html.fromHtml(formattedUsernameText(comment.username) + " " + formattedCaptionText(comment.text)));
             llComments.addView(line);
         }
 
@@ -72,6 +78,12 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> {
 
         return convertView;
 
+    }
+
+    private void launchCommentsView(InstagramPhoto photo) {
+        Intent i = new Intent(getContext(), CommentsActivity.class);
+        i.putExtra("mediaID", photo.mediaID);
+        getContext().startActivity(i);
     }
 
     private String formattedUsernameText(String username) {

@@ -2,6 +2,8 @@ package com.example.teddywyly.instagramphotoviewer;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.text.Html;
+import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +20,7 @@ import com.squareup.picasso.Transformation;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -45,7 +48,8 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> {
         ImageView ivProfile = (ImageView)convertView.findViewById(R.id.ivProfile);
         LinearLayout llComments = (LinearLayout)convertView.findViewById(R.id.llComments);
 
-        tvCaption.setText(photo.caption);
+        tvCaption.setText(Html.fromHtml(formattedUsernameText(photo.username) + " " + formattedCaptionText(photo.caption)));
+
         tvUsername.setText(photo.username);
         tvLikes.setText(photo.likesCount + " likes");
         tvTimestamp.setText(timestampText(photo.timestamp));
@@ -61,6 +65,16 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> {
 
         return convertView;
 
+    }
+
+    private String formattedUsernameText(String username) {
+        return "<font color=" + getContext().getResources().getColor(R.color.themeblue) + ">" + username + "</font>";
+    }
+
+    private String formattedCaptionText(String caption) {
+
+        //caption.replaceAll("\\b#|@\\w*\\b", "<font color=" + getContext().getResources().getColor(R.color.themeblue) + ">" + "$1" + "</font>");
+        return "<font color=" + getContext().getResources().getColor(R.color.themelightgray) + ">" + caption + "</font>";
     }
 
     private Transformation circleTransformationForImageView(ImageView view) {

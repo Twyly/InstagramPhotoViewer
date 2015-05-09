@@ -2,7 +2,7 @@
 
 This is an Android read-only photo viewer for Instagram.
 
-Time spent: 15 hours spent in total
+Time spent: ~15 hours spent in total
 
 Checklist (Tasks that are not completed are **IN PROGRESS**):
 
@@ -13,10 +13,10 @@ Checklist (Tasks that are not completed are **IN PROGRESS**):
 * [x] Show latest comment(s) for each photo
 * [x] Display each photo with the same style and proportions as the real Instagram
 * [x] Display each user profile image using a RoundedImageView
-* [ ] Display a nice default placeholder graphic for each image during loading
+* [x] Display a nice default placeholder graphic for each image during loading
 * [x] Improved user interface through styling and coloring
 * [x] Allow user to view all comments for an image within a separate activity
-* [ ] Allow video posts to be played in full-screen using the VideoView
+* [x] Allow video posts to be played in full-screen using the VideoView
 
 
 ![Video Walkthrough](todoExample.gif)

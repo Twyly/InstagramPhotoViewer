@@ -84,6 +84,11 @@ public class PhotosActivity extends ActionBarActivity {
                         photo.timestamp = photoJSON.getLong("created_time");
                         photo.commentCount = photoJSON.getJSONObject("comments").getInt("count");
                         photo.mediaID = photoJSON.getString("id");
+                        // Possible Video
+                        JSONObject videoJSON = photoJSON.optJSONObject("videos");
+                        if (videoJSON != null) {
+                            photo.videoURL = videoJSON.optJSONObject("standard_resolution").optString("url");
+                        }
                         photo.comments = new ArrayList<>();
                         JSONArray commentsJSON = photoJSON.getJSONObject("comments").getJSONArray("data");
                         for (int j=0; j<commentsJSON.length(); j++) {

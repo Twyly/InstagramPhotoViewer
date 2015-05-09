@@ -22,6 +22,12 @@
             android:name=".CommentsActivity"
             android:label="@string/title_activity_comments" >
         </activity>
+        <activity
+            android:name=".VideoActivity"
+            android:label="@string/title_activity_video"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:configChanges="orientation|screenSize">
+        </activity>
     </application>
 
 </manifest>

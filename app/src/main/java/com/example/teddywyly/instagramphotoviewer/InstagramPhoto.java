@@ -11,6 +11,7 @@ public class InstagramPhoto implements Serializable {
     public String username;
     public String caption;
     public String imageURL;
+    public String videoURL;
     public String profileURL;
     public int imageHeight;
     public int imageWidth;

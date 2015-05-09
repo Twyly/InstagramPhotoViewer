@@ -98,8 +98,17 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> {
         Picasso.with(getContext()).load(photo.imageURL).placeholder(R.drawable.lightgrayinstagram).into(viewHolder.photo);
         Picasso.with(getContext()).load(photo.profileURL).fit().transform(circleTransformationForImageView(viewHolder.profile)).into(viewHolder.profile);
 
-        return convertView;
+        viewHolder.photo.setOnClickListener(null);
+        viewHolder.photo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (photo.videoURL != null) {
+                    VideoActivity.showRemoteVideo(getContext(), photo.videoURL);
+                }
+            }
+        });
 
+        return convertView;
     }
 
     private void launchCommentsView(InstagramPhoto photo) {

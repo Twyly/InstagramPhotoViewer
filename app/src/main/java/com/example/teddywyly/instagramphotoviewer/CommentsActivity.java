@@ -22,23 +22,41 @@ public class CommentsActivity extends ActionBarActivity {
 
     public static final String CLIENT_ID = "fcbc8aead3684d019846b1040e4ed6bc";
     private ArrayList<InstagramComment> comments;
+    private ArrayList<InstagramComment> holdComments;
     private InstagramCommentsAdapter aComments;
+    private ListView lvComments;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comments);
 
+        InstagramPhoto photo = (InstagramPhoto)getIntent().getSerializableExtra("photo");
+        holdComments = new ArrayList<>();
         comments = new ArrayList<>();
-        aComments = new InstagramCommentsAdapter(this, comments);
+        aComments = new InstagramCommentsAdapter(this, comments, photo);
 
-        ListView lvComments = (ListView)findViewById(R.id.lvComments);
+        lvComments = (ListView)findViewById(R.id.lvComments);
         lvComments.setAdapter(aComments);
 
-        String mediaID = getIntent().getStringExtra("mediaID");
-        Log.d("Pass", mediaID);
+        fetchComments(photo.mediaID);
+    }
 
-        fetchComments(mediaID);
+    public void releaseComments(Boolean scrollBottom) {
+
+        ArrayList<InstagramComment> batch = new ArrayList<>();
+
+        int finalIndex = holdComments.size()-1;
+        for (int i=finalIndex; i>=Math.max(0, finalIndex-20); i--) {
+            comments.add(0, holdComments.get(i));
+            holdComments.remove(i);
+        }
+
+        aComments.notifyDataSetChanged();
+
+        if (scrollBottom) {
+            lvComments.setSelection(aComments.getCount() - 1);
+        }
     }
 
     public void fetchComments(String mediaID) {
@@ -51,7 +69,7 @@ public class CommentsActivity extends ActionBarActivity {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 Log.i("DEBUG", response.toString());
-                aComments.clear();
+                //aComments.clear();
 
                 JSONArray commentsJSON = null;
                 try {
@@ -63,14 +81,16 @@ public class CommentsActivity extends ActionBarActivity {
                         comment.timestamp = commentJSON.getLong("created_time");
                         comment.username = commentJSON.getJSONObject("from").getString("username");
                         comment.profileURL = commentJSON.getJSONObject("from").getString("profile_picture");
-                        comments.add(comment);
+                        holdComments.add(comment);
                     }
+
+                    releaseComments(true);
+
                 } catch(JSONException e) {
                     e.printStackTrace();
                 }
-
-                aComments.notifyDataSetChanged();
             }
+
 
             //on failure
             @Override

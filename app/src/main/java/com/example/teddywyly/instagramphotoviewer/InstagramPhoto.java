@@ -1,11 +1,13 @@
 package com.example.teddywyly.instagramphotoviewer;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by teddywyly on 5/5/15.
  */
-public class InstagramPhoto {
+public class InstagramPhoto implements Serializable {
+    private static final long serialVersionUID = 5177222050535318633L;
     public String username;
     public String caption;
     public String imageURL;

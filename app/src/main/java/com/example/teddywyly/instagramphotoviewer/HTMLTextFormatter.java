@@ -28,6 +28,8 @@ public class HTMLTextFormatter {
     }
 
     public String timestampText(long timestamp) {
-        return DateUtils.getRelativeTimeSpanString(timestamp * 1000, System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
+        String systemDateString = DateUtils.getRelativeTimeSpanString(timestamp * 1000, System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
+        return systemDateString;
+        //return systemDateString.replaceAll("ago|\\s+","").replaceAll();
     }
 }

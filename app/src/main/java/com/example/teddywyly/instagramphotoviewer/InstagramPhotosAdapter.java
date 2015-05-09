@@ -95,7 +95,7 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> {
         viewHolder.profile.setImageResource(0);
 //        float ratio = (float)photo.imageWidth/photo.imageHeight;
 //        Picasso.with(getContext()).load(photo.imageURL).resize(0., 0).into(ivPhoto);
-        Picasso.with(getContext()).load(photo.imageURL).into(viewHolder.photo);
+        Picasso.with(getContext()).load(photo.imageURL).placeholder(R.drawable.lightgrayinstagram).into(viewHolder.photo);
         Picasso.with(getContext()).load(photo.profileURL).fit().transform(circleTransformationForImageView(viewHolder.profile)).into(viewHolder.profile);
 
         return convertView;
@@ -104,7 +104,8 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> {
 
     private void launchCommentsView(InstagramPhoto photo) {
         Intent i = new Intent(getContext(), CommentsActivity.class);
-        i.putExtra("mediaID", photo.mediaID);
+//        i.putExtra("mediaID", photo.mediaID);
+        i.putExtra("photo", photo);
         getContext().startActivity(i);
     }
 

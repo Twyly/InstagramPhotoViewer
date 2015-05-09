@@ -67,8 +67,11 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> {
             viewHolder = (ViewHolder)convertView.getTag();
         }
 
-
-        viewHolder.caption.setText(TextUtils.concat(formatter.usernameSpanned(photo.username), " ", formatter.captionSpanned(photo.caption)));
+        if (photo.caption != null) {
+            viewHolder.caption.setText(TextUtils.concat(formatter.usernameSpanned(photo.username), " ", formatter.captionSpanned(photo.caption)));
+        } else {
+            viewHolder.caption.setText(null);
+        }
         viewHolder.username.setText(photo.username);
         viewHolder.likes.setText("\u2665 " + photo.likesCount + " likes");
         viewHolder.timestamp.setText(formatter.timestampText(photo.timestamp));
@@ -113,7 +116,6 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> {
 
     private void launchCommentsView(InstagramPhoto photo) {
         Intent i = new Intent(getContext(), CommentsActivity.class);
-//        i.putExtra("mediaID", photo.mediaID);
         i.putExtra("photo", photo);
         getContext().startActivity(i);
     }

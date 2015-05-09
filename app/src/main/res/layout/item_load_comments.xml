@@ -9,10 +9,10 @@
         android:layout_height="wrap_content"
         android:text="@string/loadComments"
         android:id="@+id/tvLoad"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
+        android:paddingLeft="@dimen/profile_image_length"
         android:paddingTop="20dp"
         android:paddingBottom="20dp"
         android:clickable="true"
         android:textColor="@color/themelightgray" />
+
 </LinearLayout>

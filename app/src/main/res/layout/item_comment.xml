@@ -17,6 +17,8 @@
         android:text="New Text"
         android:id="@+id/tvUsername"
         android:layout_alignParentTop="true"
+        android:paddingTop="@dimen/comment_text_padding"
+        android:paddingBottom="@dimen/comment_text_padding"
         android:layout_toRightOf="@+id/ivProfile"
         android:layout_toLeftOf="@+id/tvTime"
         android:layout_toStartOf="@+id/tvTime" />
@@ -35,6 +37,7 @@
         android:layout_height="wrap_content"
         android:text="New Text"
         android:id="@+id/tvComment"
+        android:paddingBottom="@dimen/comment_text_padding"
         android:layout_below="@+id/tvUsername"
         android:layout_toRightOf="@+id/ivProfile"
         android:layout_alignRight="@+id/tvTime"

@@ -1,5 +1,8 @@
 package com.example.teddywyly.instagramphotoviewer;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.Serializable;
 
 /**
@@ -11,4 +14,16 @@ public class InstagramComment implements Serializable {
     public String text;
     public String profileURL;
     public long timestamp;
+
+    //Constructors
+    public InstagramComment(JSONObject commentJSON) {
+        try {
+            username = commentJSON.getJSONObject("from").getString("username");
+            profileURL = commentJSON.getJSONObject("from").getString("profile_picture");
+            text = commentJSON.getString("text");
+            timestamp = commentJSON.getLong("created_time");
+        } catch(JSONException e) {
+            e.printStackTrace();
+        }
+    }
 }

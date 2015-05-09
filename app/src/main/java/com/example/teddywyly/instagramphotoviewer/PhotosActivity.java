@@ -73,42 +73,14 @@ public class PhotosActivity extends ActionBarActivity {
                     photosJSON = response.getJSONArray("data");
                     for (int i=0; i<photosJSON.length(); i++) {
                         JSONObject photoJSON = photosJSON.getJSONObject(i);
-                        InstagramPhoto photo = new InstagramPhoto();
-                        photo.username = photoJSON.getJSONObject("user").getString("username");
-                        photo.profileURL = photoJSON.getJSONObject("user").getString("profile_picture");
-                        photo.caption = photoJSON.getJSONObject("caption").getString("text");
-                        photo.imageURL = photoJSON.getJSONObject("images").getJSONObject("standard_resolution").getString("url");
-                        photo.imageHeight = photoJSON.getJSONObject("images").getJSONObject("standard_resolution").getInt("height");
-                        photo.imageWidth = photoJSON.getJSONObject("images").getJSONObject("standard_resolution").getInt("width");
-                        photo.likesCount = photoJSON.getJSONObject("likes").getInt("count");
-                        photo.timestamp = photoJSON.getLong("created_time");
-                        photo.commentCount = photoJSON.getJSONObject("comments").getInt("count");
-                        photo.mediaID = photoJSON.getString("id");
-                        // Possible Video
-                        JSONObject videoJSON = photoJSON.optJSONObject("videos");
-                        if (videoJSON != null) {
-                            photo.videoURL = videoJSON.optJSONObject("standard_resolution").optString("url");
-                        }
-                        photo.comments = new ArrayList<>();
-                        JSONArray commentsJSON = photoJSON.getJSONObject("comments").getJSONArray("data");
-                        for (int j=0; j<commentsJSON.length(); j++) {
-                            JSONObject commentJSON = commentsJSON.getJSONObject(j);
-                            InstagramComment comment = new InstagramComment();
-                            comment.username = commentJSON.getJSONObject("from").getString("username");
-                            comment.profileURL = commentJSON.getJSONObject("from").getString("profile_picture");
-                            comment.text = commentJSON.getString("text");
-                            comment.timestamp = commentJSON.getLong("created_time");
-                            photo.comments.add(comment);
-                        }
+                        InstagramPhoto photo = new InstagramPhoto(photoJSON);
                         photos.add(photo);
                     }
                 } catch(JSONException e) {
                     e.printStackTrace();
                 }
-
                 aPhotos.notifyDataSetChanged();
                 swipeContainer.setRefreshing(false);
-
             }
 
             //on failure
@@ -116,10 +88,7 @@ public class PhotosActivity extends ActionBarActivity {
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 swipeContainer.setRefreshing(false);
             }
-
-
         });
-
     }
 
     @Override

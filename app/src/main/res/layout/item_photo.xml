@@ -21,13 +21,13 @@
         android:layout_marginLeft="-15dp"
         android:layout_marginRight ="-15dp"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="3dp"
+        android:layout_marginBottom="@dimen/comment_text_padding"
         android:clickable="true"
         android:layout_below="@+id/ivProfile" />
 
     <ImageView
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="@dimen/profile_image_length"
+        android:layout_height="@dimen/profile_image_length"
         android:id="@+id/ivProfile"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -74,8 +74,8 @@
         android:layout_below="@+id/ivPhoto"
         android:layout_alignRight="@+id/tvTime"
         android:layout_alignEnd="@+id/tvTime"
-        android:paddingTop="3dp"
-        android:paddingBottom="3dp"
+        android:paddingTop="@dimen/comment_text_padding"
+        android:paddingBottom="@dimen/comment_text_padding"
         android:ellipsize="end" />
 
     <TextView
@@ -89,8 +89,8 @@
         android:textColor="@color/themedarkgray"
         android:layout_alignRight="@+id/tvTime"
         android:layout_alignEnd="@+id/tvTime"
-        android:paddingTop="3dp"
-        android:paddingBottom="3dp"
+        android:paddingTop="@dimen/comment_text_padding"
+        android:paddingBottom="@dimen/comment_text_padding"
         android:ellipsize="end" />
 
     <TextView
@@ -103,8 +103,8 @@
         android:layout_below="@+id/tvCaption"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:paddingTop="3dp"
-        android:paddingBottom="3dp"
+        android:paddingTop="@dimen/comment_text_padding"
+        android:paddingBottom="@dimen/comment_text_padding"
         android:background="@android:color/transparent"
         android:textColor="@color/themelightgray" />
 

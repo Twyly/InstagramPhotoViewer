@@ -42,11 +42,18 @@ public class CommentsActivity extends ActionBarActivity {
         fetchComments(photo.mediaID);
     }
 
+    // We only query the instagram API Once, and manually release comments to copy Instagram behavior.
+    // In a real applicaiton, this would obviously be silly, but there is no pagination in Instagram API.
+
     public void releaseComments(Boolean scrollBottom) {
 
         ArrayList<InstagramComment> batch = new ArrayList<>();
 
         int finalIndex = holdComments.size()-1;
+
+        if (finalIndex-20 <= 0) {
+            aComments.finishedLoading = true;
+        }
         for (int i=finalIndex; i>=Math.max(0, finalIndex-20); i--) {
             comments.add(0, holdComments.get(i));
             holdComments.remove(i);
@@ -69,18 +76,13 @@ public class CommentsActivity extends ActionBarActivity {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 Log.i("DEBUG", response.toString());
-                //aComments.clear();
 
                 JSONArray commentsJSON = null;
                 try {
                     commentsJSON = response.getJSONArray("data");
                     for (int i=0; i<commentsJSON.length(); i++) {
                         JSONObject commentJSON = commentsJSON.getJSONObject(i);
-                        InstagramComment comment = new InstagramComment();
-                        comment.text = commentJSON.getString("text");
-                        comment.timestamp = commentJSON.getLong("created_time");
-                        comment.username = commentJSON.getJSONObject("from").getString("username");
-                        comment.profileURL = commentJSON.getJSONObject("from").getString("profile_picture");
+                        InstagramComment comment = new InstagramComment(commentJSON);
                         holdComments.add(comment);
                     }
 
@@ -119,7 +121,6 @@ public class CommentsActivity extends ActionBarActivity {
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 }

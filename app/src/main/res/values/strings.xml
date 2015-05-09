@@ -2,7 +2,7 @@
     <string name="app_name">Popular Photos</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_comments">CommentsActivity</string>
+    <string name="title_activity_comments">Comments</string>
     <string name="loadComments">Load more comments</string>
-    <string name="title_activity_video">VideoActivity</string>
+    <string name="title_activity_video">Watch</string>
 </resources>

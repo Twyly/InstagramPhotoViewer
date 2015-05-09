@@ -1,6 +1,7 @@
 package com.example.teddywyly.instagramphotoviewer;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,18 +32,18 @@ public class InstagramCommentsAdapter extends BaseAdapter {
     private List<InstagramComment> comments;
     private InstagramPhoto photo;
 
+    public Boolean finishedLoading;
+
     private static class ViewHolder {
         // For Comments
         TextView username;
         TextView comment;
         TextView time;
         ImageView profile;
-        // For Load More
-//        TextView load;
     }
 
-
     public InstagramCommentsAdapter(Context newContext, List<InstagramComment> objects, InstagramPhoto newPhoto) {
+        finishedLoading = false;
         photo = newPhoto;
         comments = objects;
         context = newContext;
@@ -88,7 +89,11 @@ public class InstagramCommentsAdapter extends BaseAdapter {
             case TYPE_COMMENT:
                 if (position == 0) {
                     viewHolder.username.setText(formatter.usernameSpanned(photo.username));
-                    viewHolder.comment.setText(formatter.captionSpanned(photo.caption));
+                    if (photo.caption != null) {
+                        viewHolder.comment.setText(formatter.captionSpanned(photo.caption));
+                    } else {
+                        viewHolder.comment.setText(null);
+                    }
                     viewHolder.time.setText(formatter.timestampText(photo.timestamp));
                     viewHolder.profile.setImageResource(0);
                     Picasso.with(context).load(photo.profileURL).fit().transform(circleTransformationForImageView(viewHolder.profile)).into(viewHolder.profile);
@@ -102,27 +107,34 @@ public class InstagramCommentsAdapter extends BaseAdapter {
                 }
                 break;
             case TYPE_LOAD_MORE:
-
                 break;
-
         }
         return convertView;
     }
 
     @Override
     public int getCount() {
-        return comments.size()+2;
+        return finishedLoading ? comments.size()+1 : comments.size()+2;
     }
 
     @Override
     public Object getItem(int i) {
-        if (i == 0) {
-            return photo;
-        } else if (i == 1) {
-            return R.string.loadComments;
+        if (finishedLoading) {
+            if (i == 0) {
+                return photo;
+            } else {
+                return comments.get(i-1);
+            }
         } else {
-            return comments.get(i-2);
+            if (i == 0) {
+                return photo;
+            } else if (i == 1) {
+                return R.string.loadComments;
+            } else {
+                return comments.get(i-2);
+            }
         }
+
     }
 
     @Override
@@ -132,12 +144,12 @@ public class InstagramCommentsAdapter extends BaseAdapter {
 
     @Override
     public int getViewTypeCount() {
-        return 2;
+        return finishedLoading ? 1 : 2;
     }
 
     @Override
     public int getItemViewType(int position) {
-        if (position == 1) {
+        if (position == 1 && !finishedLoading) {
             return TYPE_LOAD_MORE;
         } else {
             return TYPE_COMMENT;

@@ -74,7 +74,9 @@ public class PhotosActivity extends ActionBarActivity {
                     for (int i=0; i<photosJSON.length(); i++) {
                         JSONObject photoJSON = photosJSON.getJSONObject(i);
                         InstagramPhoto photo = new InstagramPhoto(photoJSON);
-                        photos.add(photo);
+                        if (photo.isValidPhoto()) {
+                            photos.add(photo);
+                        }
                     }
                 } catch(JSONException e) {
                     e.printStackTrace();
@@ -90,6 +92,7 @@ public class PhotosActivity extends ActionBarActivity {
             }
         });
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

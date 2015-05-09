@@ -96,9 +96,12 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> {
 
         viewHolder.photo.setImageResource(0);
         viewHolder.profile.setImageResource(0);
-//        float ratio = (float)photo.imageWidth/photo.imageHeight;
-//        Picasso.with(getContext()).load(photo.imageURL).resize(0., 0).into(ivPhoto);
-        Picasso.with(getContext()).load(photo.imageURL).placeholder(R.drawable.lightgrayinstagram).into(viewHolder.photo);
+
+        int ratio = photo.imageWidth/photo.imageHeight;
+        int width = getContext().getResources().getDisplayMetrics().widthPixels;
+        int height = width/ratio;
+        Picasso.with(getContext()).load(photo.imageURL).resize(0, height).placeholder(R.drawable.lightgrayinstagram).into(viewHolder.photo);
+//        Picasso.with(getContext()).load(photo.imageURL).placeholder(R.drawable.lightgrayinstagram).into(viewHolder.photo);
         Picasso.with(getContext()).load(photo.profileURL).fit().transform(circleTransformationForImageView(viewHolder.profile)).into(viewHolder.profile);
 
         viewHolder.photo.setOnClickListener(null);

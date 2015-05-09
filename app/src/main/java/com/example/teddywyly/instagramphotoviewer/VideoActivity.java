@@ -16,7 +16,7 @@ import android.widget.VideoView;
 import java.net.URI;
 
 
-public class VideoActivity extends Activity implements MediaPlayer.OnCompletionListener {
+public class VideoActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,9 +29,14 @@ public class VideoActivity extends Activity implements MediaPlayer.OnCompletionL
         if (getIntent().getExtras() != null) {
             url = getIntent().getExtras().getString("url");
             if (url != null) {
+                vvInstagram.setVideoPath(url);
                 vvInstagram.setMediaController(new MediaController(this));
-                vvInstagram.setOnCompletionListener(this);
-                vvInstagram.setVideoURI(Uri.parse(url));
+                vvInstagram.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mediaPlayer) {
+                        finish();
+                    }
+                });
                 vvInstagram.start();
             }
         }
@@ -40,12 +45,6 @@ public class VideoActivity extends Activity implements MediaPlayer.OnCompletionL
             throw new IllegalArgumentException("Must set url parameter in intent");
         }
     }
-
-    @Override
-    public void onCompletion(MediaPlayer v) {
-        finish();
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

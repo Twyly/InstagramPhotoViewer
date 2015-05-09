@@ -19,7 +19,7 @@ Checklist (Tasks that are not completed are **IN PROGRESS**):
 * [x] Allow video posts to be played in full-screen using the VideoView
 
 
-![Video Walkthrough](todoExample.gif)
+![Video Walkthrough](instagramExample.gif)
 
 External Libraries Used:
 * [Picasso](http://square.github.io/picasso/)

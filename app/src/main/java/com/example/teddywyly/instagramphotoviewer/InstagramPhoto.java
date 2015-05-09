@@ -54,15 +54,15 @@ public class InstagramPhoto implements Serializable {
                 JSONObject commentJSON = commentsJSON.getJSONObject(j);
                 Log.i("JSON", commentJSON.toString());
                 InstagramComment comment = new InstagramComment(commentJSON);
-//                comment.username = commentJSON.getJSONObject("from").getString("username");
-//                comment.profileURL = commentJSON.getJSONObject("from").getString("profile_picture");
-//                comment.text = commentJSON.getString("text");
-//                comment.timestamp = commentJSON.getLong("created_time");
                 comments.add(comment);
             }
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public Boolean isValidPhoto() {
+        return imageURL != null;
     }
 }
